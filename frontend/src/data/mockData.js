@@ -1,0 +1,55 @@
+export const initialResumes = [
+  {
+    id: 'r1',
+    name: 'UX Designer Resume',
+    targetRole: 'UX Designer',
+    date: 'Jan 18',
+    score: 82,
+    sharedBy: 'Jamie T.',
+    isPublic: true,
+  },
+  {
+    id: 'r2',
+    name: 'Product Analyst Resume',
+    targetRole: 'Product Analyst',
+    date: 'Jan 10',
+    score: 71,
+    sharedBy: 'Jamie T.',
+    isPublic: false,
+  },
+  {
+    id: 'r3',
+    name: 'Product Manager Resume',
+    targetRole: 'Product Manager',
+    date: 'Dec 29',
+    score: 88,
+    sharedBy: 'Jamie T.',
+    isPublic: true,
+  },
+  {
+    id: 'r4',
+    name: 'Data Analyst Resume',
+    targetRole: 'Data Analyst',
+    date: 'Jan 05',
+    score: 92,
+    sharedBy: 'Marco R.',
+    isPublic: true,
+  },
+  {
+    id: 'r5',
+    name: 'UX Designer Portfolio Resume',
+    targetRole: 'UX Designer',
+    date: 'Jan 21',
+    score: 95,
+    sharedBy: 'Ava S.',
+    isPublic: true,
+  },
+];
+
+export const roleOptions = [
+  'Product Manager',
+  'UX Designer',
+  'Data Analyst',
+  'Marketing Manager',
+  'Product Analyst',
+];

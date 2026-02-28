@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas ATS | Billboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="container nav">
+        <div class="brand">
+          <span>Atlas ATS</span>
+          <small>Resume Readiness</small>
+        </div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="upload.html">Upload</a>
+          <a href="billboard.html" aria-current="page">Billboard</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-card">
+            <h1>Public resume billboard</h1>
+            <p>
+              Opt-in examples of high-scoring resumes to help job seekers learn what great ATS-friendly
+              formatting looks like. 
+              Recruiters can also browse talented candidates who are open to new opportunities. 
+            </p>
+            <div class="flex">
+              <a class="btn btn-primary" href="upload.html">Share My Resume</a>
+            </div>
+          </div>
+          <aside class="card">
+            <form class="form" aria-label="Search public resumes">
+              <div>
+                <label for="search-public">Search by role or name</label>
+                <input id="search-public" name="search-public" type="search" placeholder="e.g., Data Analyst" />
+              </div>
+              <button class="btn btn-outline" type="button">Search</button>
+            </form>
+          </aside>
+        </section>
+
+        <section class="section">
+          <h2>Featured resumes</h2>
+          <table class="table" aria-label="Featured public resumes">
+            <thead>
+              <tr>
+                <th>Resume</th>
+                <th>Target role</th>
+                <th>ATS Score</th>
+                <th>Shared by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Product Manager Resume</td>
+                <td>Product Manager</td>
+                <td>94</td>
+                <td>Lina M.</td>
+              </tr>
+              <tr>
+                <td>Data Analyst Resume</td>
+                <td>Data Analyst</td>
+                <td>92</td>
+                <td>Marco R.</td>
+              </tr>
+              <tr>
+                <td>UX Designer Resume</td>
+                <td>UX Designer</td>
+                <td>95</td>
+                <td>Ava S.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">Optional public billboard for high-scoring resumes</div>
+    </footer>
+  </div>
+</body>
+</html>

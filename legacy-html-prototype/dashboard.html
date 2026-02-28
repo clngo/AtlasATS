@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas ATS | Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="container nav">
+        <div class="brand">
+          <span>Atlas ATS</span>
+          <small>Resume Readiness</small>
+        </div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="dashboard.html" aria-current="page">Dashboard</a>
+          <a href="upload.html">Upload</a>
+          <a href="billboard.html">Billboard</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="hero">
+          <div class="hero-card">
+            <h1>Welcome back, Jamie Tran.</h1>
+            <p>
+              Your latest resume scan is ready. Review your score, check keyword coverage, and keep your
+              strongest versions organized.
+            </p>
+            <div class="flex">
+              <a class="btn btn-primary" href="upload.html">Start New Upload</a>
+            </div>
+          </div>
+          <aside class="card">
+            <form class="form" aria-label="Search saved resumes">
+              <div>
+                <label for="search-name">Search by resume name</label>
+                <input id="search-name" name="search-name" type="search" placeholder="e.g., UX Designer Resume" />
+              </div>
+              <button class="btn btn-outline" type="button">Search</button>
+            </form>
+          </aside>
+        </section>
+
+        <section class="section">
+          <h2>Saved Resumes</h2>
+          <table class="table" aria-label="Saved resume reviews">
+            <thead>
+              <tr>
+                <th>Resume</th>
+                <th>Target role</th>
+                <th>Date</th>
+                <th>ATS Score</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>UX Designer Resume</td>
+                <td>UX Designer</td>
+                <td>Jan 18</td>
+                <td>82</td>
+                <td><a class="btn btn-outline" href="feedback.html">View</a></td>
+              </tr>
+              <tr>
+                <td>Product Analyst Resume</td>
+                <td>Product Analyst</td>
+                <td>Jan 10</td>
+                <td>71</td>
+                <td><a class="btn btn-outline" href="feedback.html">View</a></td>
+              </tr>
+              <tr>
+                <td>Product Manager Resume</td>
+                <td>Product Manager</td>
+                <td>Dec 29</td>
+                <td>88</td>
+                <td><a class="btn btn-outline" href="feedback.html">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">Dashboard overview for mock ATS system</div>
+    </footer>
+  </div>
+</body>
+</html>

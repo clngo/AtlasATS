@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas ATS | Resume Upload</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="container nav">
+        <div class="brand">
+          <span>Atlas ATS</span>
+          <small>Resume Readiness</small>
+        </div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="index.html">Home</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="upload.html" aria-current="page">Upload</a>
+          <a href="billboard.html">Billboard</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container hero hero-center">
+        <div class="hero-card">
+          <h1>Upload your resume</h1>
+          <p>
+            We'll scan your resume for ATS compatibility, keyword coverage, and formatting issues. Your file is
+            stored securely and only the parsed results are saved.
+          </p>
+          <form class="form" aria-label="Resume upload form">
+            <div>
+              <label for="resume-file">Resume file</label>
+              <input id="resume-file" type="file" accept=".pdf,.doc,.docx" />
+            </div>
+            <div>
+              <label for="role">Target role</label>
+              <select id="role" name="role">
+                <option>Product Manager</option>
+                <option>UX Designer</option>
+                <option>Data Analyst</option>
+                <option>Marketing Manager</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" type="button">Run ATS Scan</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">Upload page for mock ATS resume checker</div>
+    </footer>
+  </div>
+</body>
+</html>
