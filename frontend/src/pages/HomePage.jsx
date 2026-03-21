@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-export default function HomePage() {
+export default function HomePage({ isAuthenticated }) {
   return (
     <>
       <div className="container hero">
@@ -11,8 +11,12 @@ export default function HomePage() {
             keyword coverage, and formatting checks so you can apply with confidence.
           </p>
           <div className="flex">
-            <Link className="btn btn-primary" to="/upload">Upload Resume</Link>
-            <Link className="btn btn-outline" to="/dashboard">View Dashboard</Link>
+            <Link className="btn btn-primary" to={isAuthenticated ? "/upload" : "/register"}>
+              {isAuthenticated ? "Upload Resume" : "Create Account"}
+            </Link>
+            <Link className="btn btn-outline" to={isAuthenticated ? "/dashboard" : "/login"}>
+              {isAuthenticated ? "View Dashboard" : "Log In"}
+            </Link>
           </div>
         </div>
         <div className="card">

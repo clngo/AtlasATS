@@ -1,19 +1,39 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { fetchPublicResumes } from "../api/resumes.js";
 
-export default function BillboardPage({ publicResumes }) {
-  const [query, setQuery] = useState('');
+export default function BillboardPage() {
+  const [query, setQuery] = useState("");
+  const [resumes, setResumes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setIsLoading(true);
+    setError("");
+
+    fetchPublicResumes()
+      .then((payload) => {
+        setResumes(payload.resumes);
+      })
+      .catch((requestError) => {
+        setError(requestError.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     if (!normalized) {
-      return publicResumes;
+      return resumes;
     }
-    return publicResumes.filter((resume) => {
+    return resumes.filter((resume) => {
       const haystack = `${resume.name} ${resume.targetRole} ${resume.sharedBy}`.toLowerCase();
       return haystack.includes(normalized);
     });
-  }, [publicResumes, query]);
+  }, [resumes, query]);
 
   return (
     <div className="container">
@@ -21,8 +41,8 @@ export default function BillboardPage({ publicResumes }) {
         <div className="hero-card">
           <h1>Public resume billboard</h1>
           <p>
-            Browse opt-in high-scoring resumes to learn ATS-friendly formatting and
-            language patterns.
+            Browse opt-in high-scoring resumes stored on the server to learn ATS-friendly
+            formatting and language patterns.
           </p>
           <div className="flex">
             <Link className="btn btn-primary" to="/upload">Share My Resume</Link>
@@ -48,33 +68,37 @@ export default function BillboardPage({ publicResumes }) {
 
       <section className="section">
         <h2>Featured resumes</h2>
-        <div className="table-wrap">
-          <table className="table" aria-label="Featured public resumes">
-            <thead>
-              <tr>
-                <th>Resume</th>
-                <th>Target role</th>
-                <th>ATS Score</th>
-                <th>Shared by</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((resume) => (
-                <tr key={resume.id}>
-                  <td>{resume.name}</td>
-                  <td>{resume.targetRole}</td>
-                  <td>{resume.score}</td>
-                  <td>{resume.sharedBy}</td>
-                </tr>
-              ))}
-              {filtered.length === 0 ? (
+        {isLoading ? <div className="card status-card">Loading public resumes...</div> : null}
+        {error ? <div className="card status-card error-card">{error}</div> : null}
+        {!isLoading && !error ? (
+          <div className="table-wrap">
+            <table className="table" aria-label="Featured public resumes">
+              <thead>
                 <tr>
-                  <td colSpan="4">No public resume matches your search.</td>
+                  <th>Resume</th>
+                  <th>Target role</th>
+                  <th>ATS Score</th>
+                  <th>Shared by</th>
                 </tr>
-              ) : null}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((resume) => (
+                  <tr key={resume.id}>
+                    <td>{resume.name}</td>
+                    <td>{resume.targetRole}</td>
+                    <td>{resume.score}</td>
+                    <td>{resume.sharedBy}</td>
+                  </tr>
+                ))}
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan="4">No public resume matches your search.</td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
       </section>
     </div>
   );

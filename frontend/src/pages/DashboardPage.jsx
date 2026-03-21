@@ -1,8 +1,35 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { fetchUserResumes } from "../api/resumes.js";
 
-export default function DashboardPage({ resumes }) {
-  const [query, setQuery] = useState('');
+function formatDate(dateString) {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+}
+
+export default function DashboardPage({ token, user }) {
+  const [query, setQuery] = useState("");
+  const [resumes, setResumes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setIsLoading(true);
+    setError("");
+
+    fetchUserResumes(token)
+      .then((payload) => {
+        setResumes(payload.resumes);
+      })
+      .catch((requestError) => {
+        setError(requestError.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [token]);
 
   const filteredResumes = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -16,9 +43,9 @@ export default function DashboardPage({ resumes }) {
     <div className="container">
       <section className="hero">
         <div className="hero-card">
-          <h1>Welcome back, Jamie Tran.</h1>
+          <h1>Welcome back, {user?.name || "Jamie Tran"}.</h1>
           <p>
-            Your latest resume scans are saved below. Search by name, review scores,
+            Your saved resume scans live on the server now. Search by name, review scores,
             and open detailed feedback.
           </p>
           <div className="flex">
@@ -45,39 +72,43 @@ export default function DashboardPage({ resumes }) {
 
       <section className="section">
         <h2>Saved Resumes</h2>
-        <div className="table-wrap">
-          <table className="table" aria-label="Saved resume reviews">
-            <thead>
-              <tr>
-                <th>Resume</th>
-                <th>Target role</th>
-                <th>Date</th>
-                <th>ATS Score</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredResumes.map((resume) => (
-                <tr key={resume.id}>
-                  <td>{resume.name}</td>
-                  <td>{resume.targetRole}</td>
-                  <td>{resume.date}</td>
-                  <td>{resume.score}</td>
-                  <td>
-                    <Link className="btn btn-outline" to={`/feedback/${resume.id}`}>
-                      View
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-              {filteredResumes.length === 0 ? (
+        {isLoading ? <div className="card status-card">Loading saved resumes...</div> : null}
+        {error ? <div className="card status-card error-card">{error}</div> : null}
+        {!isLoading && !error ? (
+          <div className="table-wrap">
+            <table className="table" aria-label="Saved resume reviews">
+              <thead>
                 <tr>
-                  <td colSpan="5">No resume matches that name.</td>
+                  <th>Resume</th>
+                  <th>Target role</th>
+                  <th>Date</th>
+                  <th>ATS Score</th>
+                  <th>Action</th>
                 </tr>
-              ) : null}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filteredResumes.map((resume) => (
+                  <tr key={resume.id}>
+                    <td>{resume.name}</td>
+                    <td>{resume.targetRole}</td>
+                    <td>{formatDate(resume.createdAt)}</td>
+                    <td>{resume.score}</td>
+                    <td>
+                      <Link className="btn btn-outline" to={`/feedback/${resume.id}`}>
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+                {filteredResumes.length === 0 ? (
+                  <tr>
+                    <td colSpan="5">No resume matches that name.</td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
       </section>
     </div>
   );

@@ -1,17 +1,36 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { roleOptions } from '../data/mockData.js';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createResume } from "../api/resumes.js";
+import { roleOptions } from "../data/mockData.js";
 
-export default function UploadPage({ addResume }) {
-  const [fileName, setFileName] = useState('');
+export default function UploadPage({ token }) {
+  const [fileName, setFileName] = useState("");
+  const [resumeName, setResumeName] = useState("");
   const [targetRole, setTargetRole] = useState(roleOptions[0]);
   const [isPublic, setIsPublic] = useState(true);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const createdId = addResume({ fileName, targetRole, isPublic });
-    navigate(`/feedback/${createdId}`);
+    setIsSubmitting(true);
+    setError("");
+
+    const derivedResumeName = resumeName.trim() || fileName?.replace(/\.[^/.]+$/, "") || `${targetRole} Resume`;
+
+    try {
+      const payload = await createResume(token, {
+        name: derivedResumeName,
+        targetRole,
+        isPublic,
+      });
+      navigate(`/feedback/${payload.resume.id}`);
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -19,8 +38,7 @@ export default function UploadPage({ addResume }) {
       <div className="hero-card">
         <h1>Upload your resume</h1>
         <p>
-          Run a mock ATS scan to generate score and feedback details. This data is
-          stored in frontend state until you reload the page.
+          Run a server-backed mock ATS scan to generate a score and save it to your account.
         </p>
         <form className="form" aria-label="Resume upload form" onSubmit={handleSubmit}>
           <div>
@@ -31,8 +49,23 @@ export default function UploadPage({ addResume }) {
               accept=".pdf,.doc,.docx"
               onChange={(event) => {
                 const selected = event.target.files?.[0];
-                setFileName(selected ? selected.name : '');
+                const nextFileName = selected ? selected.name : "";
+                setFileName(nextFileName);
+                if (!resumeName.trim() && nextFileName) {
+                  setResumeName(nextFileName.replace(/\.[^/.]+$/, ""));
+                }
               }}
+            />
+          </div>
+          <div>
+            <label htmlFor="resume-name">Resume name</label>
+            <input
+              id="resume-name"
+              name="resume-name"
+              type="text"
+              placeholder="e.g., Product Manager Resume"
+              value={resumeName}
+              onChange={(event) => setResumeName(event.target.value)}
             />
           </div>
           <div>
@@ -53,14 +86,17 @@ export default function UploadPage({ addResume }) {
             <select
               id="public-share"
               name="public-share"
-              value={isPublic ? 'public' : 'private'}
-              onChange={(event) => setIsPublic(event.target.value === 'public')}
+              value={isPublic ? "public" : "private"}
+              onChange={(event) => setIsPublic(event.target.value === "public")}
             >
               <option value="public">Public (show on billboard)</option>
               <option value="private">Private (dashboard only)</option>
             </select>
           </div>
-          <button className="btn btn-primary" type="submit">Run ATS Scan</button>
+          {error ? <p className="form-error">{error}</p> : null}
+          <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Saving Resume..." : "Run ATS Scan"}
+          </button>
         </form>
       </div>
     </div>

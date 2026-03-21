@@ -119,6 +119,13 @@ input:focus {
   gap: var(--space-2);
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
 .nav-links a {
   padding: 8px 14px;
   border: 1px solid transparent;
@@ -134,6 +141,16 @@ input:focus {
 
 .theme-btn {
   white-space: nowrap;
+}
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  background: var(--color-surface);
 }
 
 .main {
@@ -175,6 +192,14 @@ input:focus {
 .metric {
   padding: var(--space-4);
   box-shadow: var(--shadow-soft);
+}
+
+.status-card {
+  margin-top: var(--space-3);
+}
+
+.error-card {
+  color: #b42318;
 }
 
 .hero-card h1 {
@@ -230,6 +255,26 @@ input:focus {
   background: var(--color-surface);
 }
 
+.form-error {
+  margin: 0;
+  color: #b42318;
+  font-weight: 600;
+}
+
+.auth-card {
+  max-width: 520px;
+}
+
+.auth-switch {
+  margin: var(--space-4) 0 0;
+  color: var(--color-muted);
+}
+
+.auth-switch a {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
 .flex {
   display: flex;
   flex-wrap: wrap;
@@ -247,6 +292,11 @@ input:focus {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 .btn-primary {
@@ -317,6 +367,15 @@ input:focus {
 }
 
 @media (max-width: 720px) {
+  .nav-actions {
+    width: 100%;
+  }
+
+  .user-chip {
+    width: 100%;
+    justify-content: center;
+  }
+
   .theme-btn {
     width: 100%;
   }

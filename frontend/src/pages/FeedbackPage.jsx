@@ -1,23 +1,49 @@
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { fetchResumeById } from "../api/resumes.js";
 
 function scoreLevel(score) {
   if (score >= 90) {
-    return 'Excellent';
+    return "Excellent";
   }
   if (score >= 80) {
-    return 'Strong';
+    return "Strong";
   }
   if (score >= 70) {
-    return 'Needs improvement';
+    return "Needs improvement";
   }
-  return 'Low';
+  return "Low";
 }
 
-export default function FeedbackPage({ resumes }) {
+export default function FeedbackPage({ token }) {
   const { resumeId } = useParams();
-  const resume = resumes.find((item) => item.id === resumeId);
+  const [resume, setResume] = useState(null);
+  const [isLoading, setIsLoading] = useState(Boolean(resumeId));
+  const [error, setError] = useState("");
 
-  if (!resume) {
+  useEffect(() => {
+    if (!resumeId) {
+      setResume(null);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    fetchResumeById(token, resumeId)
+      .then((payload) => {
+        setResume(payload.resume);
+      })
+      .catch((requestError) => {
+        setError(requestError.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [resumeId, token]);
+
+  if (!resumeId) {
     return (
       <div className="container">
         <section className="section">
@@ -31,13 +57,33 @@ export default function FeedbackPage({ resumes }) {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className="container">
+        <section className="section">
+          <div className="card status-card">Loading feedback...</div>
+        </section>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <section className="section">
+          <div className="card status-card error-card">{error}</div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <section className="hero">
         <div className="hero-card">
           <h1>Feedback: {resume.name}</h1>
           <p>
-            This page shows mock ATS feedback for the selected resume.
+            This page shows server-backed ATS feedback for the selected resume.
           </p>
           <div className="metrics">
             <div className="metric">
