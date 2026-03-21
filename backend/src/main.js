@@ -1,3 +1,5 @@
+import path from "path";
+import { fileURLToPath } from "url";
 import bcrypt from "bcryptjs";
 import cors from "cors";
 import express from "express";
@@ -10,6 +12,10 @@ import { User } from "./models/User.js";
 const PORT = Number.parseInt(getEnvVar("PORT", false), 10) || 3000;
 const JWT_SECRET = getEnvVar("JWT_SECRET", false) || "dev-secret-change-me";
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.resolve(__dirname, "../../frontend/dist");
 
 app.use(
   cors({
@@ -207,6 +213,12 @@ app.use((error, req, res, next) => {
 
   console.error(error);
   res.status(500).json({ error: "Server error." });
+});
+
+app.use(express.static(frontendDistPath));
+
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(frontendDistPath, "index.html"));
 });
 
 connectToDatabase()
